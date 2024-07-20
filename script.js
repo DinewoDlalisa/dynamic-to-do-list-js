@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(removeButton);
         taskList.appendChild(listItem);
 
-        taskInput.value = " ";
+        taskInput.value.trim();
 
         addButton.addEventListener('click' ,addTask);
 
