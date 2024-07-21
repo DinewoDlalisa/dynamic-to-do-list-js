@@ -33,12 +33,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-   
+    function loadTasks() {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks.forEach(taskText => addTask(taskText, false));
+    }
 
-        
+    function addTask(taskText, save = true) {
+        if (!taskText.trim()) {
+            alert('Please enter a task.');
+            return;
+        }
 
-    
+        const taskItem = document.createElement('li');
+        taskItem.textContent = taskText;
 
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.className = 'remove-btn';
+        removeButton.onclick = () => {
+            taskList.removeChild(taskItem);
+            updateLocalStorage();
+        };
 
+        taskItem.appendChild(removeButton);
+        taskList.appendChild(taskItem);
 
+        if (save) {
+            updateLocalStorage();
+        }
+
+        taskInput.value = '';
+    }
+
+    function updateLocalStorage() {
+        const tasks = [];
+        document.querySelectorAll('#task-list li').forEach(taskItem => {
+            tasks.push(taskItem.firstChild.textContent);
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    addButton.addEventListener('click', () => {
+        addTask(taskInput.value);
+    });
+
+    taskInput.addEventListener('keypress', event => {
+        if (event.key = 'Enter') {
+            addTask(taskInput.value);
+        }
+    });
+
+    loadTasks();
 });
